@@ -1,16 +1,21 @@
-import React from 'react'
-import Header from './Header'
-import Content from './Content'
-import Total from './Total'
+import React from "react";
+import Header from "./Header";
+import Content from "./Content";
+import Total from "./Total";
 
-const Course = ({course: { name, parts}}) => {
+const Course = ({ course: { name, parts } }) => {
+  const total = parts.reduce((total, { exercises }) => total + exercises, 0)
+  console.log('total: ', total);
+
   return (
     <>
-        <Header name={name} />
-        <Content parts={parts} />
-        <Total sum={parts[0].exercises + parts[1].exercises + parts[2].exercises} />
+      <Header name={name} />
+      <Content parts={parts} />
+      <Total
+        total={total}
+      />
     </>
-  )
-}
+  );
+};
 
-export default Course
+export default Course;
