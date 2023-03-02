@@ -1,8 +1,8 @@
 import React from 'react'
 
-const Total = ({sum}) => {
+const Total = ({total}) => {
   return (
-    <p style={{fontWeight: 'bold'}}>Total of {sum} exercices</p>
+    <p style={{fontWeight: 'bold'}}>Total of {total} exercices</p>
   )
 }
 
