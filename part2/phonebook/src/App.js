@@ -6,6 +6,12 @@ const App = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    if (persons.find(({ name }) => name === newName)) {
+      alert(`${newName} is already added to the phonebook`);
+      return;
+    }
+
     setPersons((prevState) => [...prevState, { name: newName }]);
     setNewName("");
   };
