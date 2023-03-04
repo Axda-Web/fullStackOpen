@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from 'axios'
+import axios from "axios";
 import Search from "./components/Search";
 import Form from "./components/Form";
 import People from "./components/People";
@@ -11,15 +11,11 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [searchInput, setSearchInput] = useState("");
 
-
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
-      })
-  }, [])
-
+    axios.get("http://localhost:3001/persons").then((response) => {
+      setPersons(response.data);
+    });
+  }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -29,10 +25,15 @@ const App = () => {
       return;
     }
 
-    setPersons((prevState) => [
-      ...prevState,
-      { name: newName, number: newNumber },
-    ]);
+    axios
+      .post("http://localhost:3001/persons", {
+        name: newName,
+        number: newNumber,
+      })
+      .then((response) => {
+        setPersons((prevState) => [...prevState, response.data]);
+      });
+
     setNewName("");
     setNewNumber("");
   };
