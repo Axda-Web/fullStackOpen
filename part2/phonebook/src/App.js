@@ -58,6 +58,18 @@ const App = () => {
     );
   };
 
+  const handleDeleteClick = (id, name) => {
+    if (window.confirm(`Delete ${name} ?`)) {
+      numberService.remove(id).then(() => {
+        setPersons((prevState) => [
+          ...prevState.filter((person) => person.id !== id),
+        ]);
+      });
+    } else {
+      return;
+    }
+  };
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -73,6 +85,7 @@ const App = () => {
         persons={persons}
         searchResults={searchResults}
         searchInput={searchInput}
+        handleDeleteClick={handleDeleteClick}
       />
     </div>
   );
