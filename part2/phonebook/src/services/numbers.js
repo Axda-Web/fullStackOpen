@@ -12,7 +12,13 @@ const create = newNumber => {
     return request.then(response => response.data)
 }
 
+const remove = id => {
+    const request = axios.delete(`${BASE_URL}/${id}`)
+    return request.then(response => response.data)
+}
+
 export default {
     getAll,
-    create
+    create,
+    remove
 }
