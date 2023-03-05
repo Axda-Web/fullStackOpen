@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import numberService from "./services/numbers";
+import personService from './services/persons'
 import Search from "./components/Search";
 import Form from "./components/Form";
 import People from "./components/People";
@@ -12,7 +12,7 @@ const App = () => {
   const [searchInput, setSearchInput] = useState("");
 
   useEffect(() => {
-    numberService.getAll().then((initialNumbers) => {
+    personService.getAll().then((initialNumbers) => {
       setPersons(initialNumbers);
     });
   }, []);
@@ -29,7 +29,7 @@ const App = () => {
       ) {
         const changedPersonId = existingPerson.id;
         const changedPerson = { ...existingPerson, number: newNumber };
-        numberService
+        personService
           .update(changedPersonId, changedPerson)
           .then((returnedPerson) => {
             setPersons(
@@ -48,7 +48,7 @@ const App = () => {
       }
     }
 
-    numberService
+    personService
       .create({
         name: newName,
         number: newNumber,
@@ -83,7 +83,7 @@ const App = () => {
 
   const handleDeleteClick = (id, name) => {
     if (window.confirm(`Delete ${name} ?`)) {
-      numberService.remove(id).then(() => {
+      personService.remove(id).then(() => {
         setPersons((prevState) => [
           ...prevState.filter((person) => person.id !== id),
         ]);
