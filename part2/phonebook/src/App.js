@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import numberService from "./services/numbers";
+import personService from './services/persons'
 import Search from "./components/Search";
 import Form from "./components/Form";
 import People from "./components/People";
@@ -12,20 +12,43 @@ const App = () => {
   const [searchInput, setSearchInput] = useState("");
 
   useEffect(() => {
-    numberService.getAll().then((initialNumbers) => {
+    personService.getAll().then((initialNumbers) => {
       setPersons(initialNumbers);
     });
   }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    const existingPerson = persons.find(({ name }) => name === newName);
 
-    if (persons.find(({ name }) => name === newName)) {
-      alert(`${newName} is already added to the phonebook`);
-      return;
+    if (existingPerson) {
+      if (
+        window.confirm(
+          `${newName} is already added to the phonebook, replace the old number with a new one?`
+        )
+      ) {
+        const changedPersonId = existingPerson.id;
+        const changedPerson = { ...existingPerson, number: newNumber };
+        personService
+          .update(changedPersonId, changedPerson)
+          .then((returnedPerson) => {
+            setPersons(
+              persons.map((person) =>
+                person.id !== changedPersonId ? person : returnedPerson
+              )
+            );
+          });
+        setNewName("");
+        setNewNumber("");
+        return;
+      } else {
+        setNewName("");
+        setNewNumber("");
+        return;
+      }
     }
 
-    numberService
+    personService
       .create({
         name: newName,
         number: newNumber,
@@ -60,7 +83,7 @@ const App = () => {
 
   const handleDeleteClick = (id, name) => {
     if (window.confirm(`Delete ${name} ?`)) {
-      numberService.remove(id).then(() => {
+      personService.remove(id).then(() => {
         setPersons((prevState) => [
           ...prevState.filter((person) => person.id !== id),
         ]);
