@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import personService from './services/persons'
+import personService from "./services/persons";
 import Search from "./components/Search";
 import Form from "./components/Form";
 import People from "./components/People";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -10,6 +11,7 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [searchInput, setSearchInput] = useState("");
+  const [successMessage, setSuccessMessage] = useState(null);
 
   useEffect(() => {
     personService.getAll().then((initialNumbers) => {
@@ -38,6 +40,12 @@ const App = () => {
               )
             );
           });
+
+        setSuccessMessage(`Updated ${existingPerson.name}`);
+        setTimeout(() => {
+          setSuccessMessage(null);
+        }, 5000);
+
         setNewName("");
         setNewNumber("");
         return;
@@ -56,6 +64,11 @@ const App = () => {
       .then((returnedNumber) => {
         setPersons((prevState) => [...prevState, returnedNumber]);
       });
+
+    setSuccessMessage(`Added ${newName}`);
+    setTimeout(() => {
+      setSuccessMessage(null);
+    }, 5000);
 
     setNewName("");
     setNewNumber("");
@@ -96,6 +109,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={successMessage} />
       <Search newName={newName} handleSearchChange={handleSearchChange} />
       <Form
         handleSubmit={handleSubmit}
