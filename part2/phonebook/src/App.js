@@ -19,10 +19,33 @@ const App = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    const existingPerson = persons.find(({ name }) => name === newName);
 
-    if (persons.find(({ name }) => name === newName)) {
-      alert(`${newName} is already added to the phonebook`);
-      return;
+    if (existingPerson) {
+      if (
+        window.confirm(
+          `${newName} is already added to the phonebook, replace the old number with a new one?`
+        )
+      ) {
+        const changedPersonId = existingPerson.id;
+        const changedPerson = { ...existingPerson, number: newNumber };
+        numberService
+          .update(changedPersonId, changedPerson)
+          .then((returnedPerson) => {
+            setPersons(
+              persons.map((person) =>
+                person.id !== changedPersonId ? person : returnedPerson
+              )
+            );
+          });
+        setNewName("");
+        setNewNumber("");
+        return;
+      } else {
+        setNewName("");
+        setNewNumber("");
+        return;
+      }
     }
 
     numberService
