@@ -12,6 +12,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [searchInput, setSearchInput] = useState("");
   const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     personService.getAll().then((initialNumbers) => {
@@ -38,6 +39,17 @@ const App = () => {
               persons.map((person) =>
                 person.id !== changedPersonId ? person : returnedPerson
               )
+            );
+          })
+          .catch((error) => {
+            setErrorMessage(
+              `Information of '${existingPerson.name}' has already been removed from server`
+            );
+            setTimeout(() => {
+              setErrorMessage(null);
+            }, 5000);
+            setPersons(
+              persons.filter((person) => person.id !== existingPerson.id)
             );
           });
 
@@ -109,7 +121,14 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={successMessage} />
+      <Notification
+        message={successMessage}
+        classes="notification notification--success"
+      />
+      <Notification
+        message={errorMessage}
+        classes="notification notification--error"
+      />
       <Search newName={newName} handleSearchChange={handleSearchChange} />
       <Form
         handleSubmit={handleSubmit}
