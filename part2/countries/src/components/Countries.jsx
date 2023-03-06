@@ -1,11 +1,13 @@
 import React from "react";
+import Country from "./Country";
+import CountryDetails from "./CountryDetails";
 
-const Countries = ({ filteredCountries, searchText }) => {
-  if (
-    !filteredCountries ||
-    filteredCountries.length === 0 ||
-    searchText.length === 0
-  ) {
+const Countries = ({ countries, filteredCountries, searchText }) => {
+  if (countries.length === 0) {
+    return <div>loading...</div>;
+  }
+
+  if (!filteredCountries || searchText.length === 0) {
     return <div>Search for a country</div>;
   }
 
@@ -16,28 +18,10 @@ const Countries = ({ filteredCountries, searchText }) => {
   return (
     <>
       {filteredCountries.length === 1 ? (
-        <>
-          <h2>{filteredCountries[0].name.common}</h2>
-          <div>capital {filteredCountries[0].capital[0]}</div>
-          <div>area {filteredCountries[0].area}</div>
-          <h3>Languages:</h3>
-          <ul>
-            {Object.values(filteredCountries[0].languages).map(
-              (language, i) => (
-                <li key={i}>{language}</li>
-              )
-            )}
-          </ul>
-          <img
-            src={filteredCountries[0].flags.svg}
-            alt={`${filteredCountries[0].name.common} flag`}
-            height="100px"
-            width="100px"
-          />
-        </>
+        <CountryDetails country={filteredCountries[0]} />
       ) : (
-        filteredCountries.map(({ name: { common } }) => (
-          <div key={common}>{common}</div>
+        filteredCountries.map((country) => (
+          <Country key={country.name.common} country={country} />
         ))
       )}
     </>

@@ -29,6 +29,7 @@ const App = () => {
     <div>
       <Search searchText={searchText} handleSearchChange={handleSearchChange} />
       <Countries
+        countries={countries}
         filteredCountries={filteredCountries}
         searchText={searchText}
       />
