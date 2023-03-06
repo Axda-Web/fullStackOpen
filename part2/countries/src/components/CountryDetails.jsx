@@ -1,5 +1,7 @@
 import React from "react";
 
+import Weather from "./Weather";
+
 const CountryDetails = ({ country }) => {
   return (
     <>
@@ -18,6 +20,7 @@ const CountryDetails = ({ country }) => {
         height="100px"
         width="100px"
       />
+      <Weather />
     </>
   );
 };
