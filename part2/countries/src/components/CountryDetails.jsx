@@ -20,7 +20,7 @@ const CountryDetails = ({ country }) => {
         height="100px"
         width="100px"
       />
-      <Weather />
+      <Weather capitalName={country.capital[0]} />
     </>
   );
 };
